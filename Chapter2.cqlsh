@@ -1,0 +1,55 @@
+#to create a simple Table
+create table "users" (
+  "username" text PRIMARY KEY,
+  "email" text,
+  "encrypted_password" blob
+);
+
+#to insert a data into the "users" Table
+insert into "users"
+("username", "email", "encrypted_password")
+values (
+  'alice',
+  'alice@gmail.com',
+  0x8914977ed729792e403da53024c6069a9158b8c4
+);
+
+#partial insert
+insert into "users"
+("username", "encrypted_password")
+values (
+  'bob',
+  0x8914977ed729792e403da53024c6069a9158b8c4
+);
+
+#to retrieve a user profile
+select * from "users" where "username" = 'alice';
+
+#to retrieve specific columns
+select "username", "encrypted_password" from "users" where "username" = 'alice';
+
+#to retrieve all rows
+select * from "users";
+
+#inserting some more data to demonstrate paginating through the results of "users" table
+insert into "users"
+("username", "email", "encrypted_password")
+values (
+  'carol',
+  'carol@gmail.com',
+  0x8914977ed729792e403da53024c6069a9158b8c4
+);
+
+insert into "users"
+("username", "email", "encrypted_password")
+values (
+  'dave',
+  'dave@gmail.com',
+  0x8914977ed729792e403da53024c6069a9158b8c4
+);
+
+#to list the original ordering
+select "username", token("username") from "users";
+
+#to paginate based on token values
+select * from "users" where token("username") > token('dave') limit 2;
